@@ -7,6 +7,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Datum;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Kino;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Tagesplan;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.beobachtungsmuster.Beobachter;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.datumsauswaehler.DatumAuswaehlWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.vorstellungsauswaehler.VorstellungsAuswaehlWerkzeug;
@@ -58,6 +59,31 @@ public class KassenWerkzeug
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
         setzeAusgewaehlteVorstellung();
+        
+        /*_datumAuswaehlWerkzeug.setzeBeobachter(new Beobachter() 
+        {
+            public void beachteAenderung() 
+            { 
+                setzeTagesplanFuerAusgewaehltesDatum(); 
+                setzeAusgewaehlteVorstellung();
+            }
+        });
+        _vorstellungAuswaehlWerkzeug.setzeBeobachter(new Beobachter() 
+        {
+            public void beachteAenderung() 
+            { 
+                setzeAusgewaehlteVorstellung();
+            }
+        });*/
+        
+
+        /* TODO comments */
+        _datumAuswaehlWerkzeug.setzeBeobachter(() ->
+            { 
+                setzeTagesplanFuerAusgewaehltesDatum(); 
+                setzeAusgewaehlteVorstellung();
+            });
+        _vorstellungAuswaehlWerkzeug.setzeBeobachter(() -> setzeAusgewaehlteVorstellung());
 
         _ui.zeigeFenster();
     }
