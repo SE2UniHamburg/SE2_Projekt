@@ -11,6 +11,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.datumsauswaehler.DatumAuswaehlWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.vorstellungsauswaehler.VorstellungsAuswaehlWerkzeug;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeug;
 
 /**
  * Das Kassenwerkzeug. Mit diesem Werkzeug kann die Benutzerin oder der Benutzer
@@ -32,6 +33,7 @@ public class KassenWerkzeug
     private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
     private DatumAuswaehlWerkzeug _datumAuswaehlWerkzeug;
     private VorstellungsAuswaehlWerkzeug _vorstellungAuswaehlWerkzeug;
+    private BarzahlungsWerkzeug _barzahlungsWerkzeug;
 
     /**
      * Initialisiert das Kassenwerkzeug.
@@ -50,6 +52,7 @@ public class KassenWerkzeug
         _platzVerkaufsWerkzeug = new PlatzVerkaufsWerkzeug();
         _datumAuswaehlWerkzeug = new DatumAuswaehlWerkzeug();
         _vorstellungAuswaehlWerkzeug = new VorstellungsAuswaehlWerkzeug();
+        _barzahlungsWerkzeug = new BarzahlungsWerkzeug();
 
         erzeugeListenerFuerSubwerkzeuge();
 
@@ -88,6 +91,15 @@ public class KassenWerkzeug
                         setzeAusgewaehlteVorstellung();
                     }
                 });
+        _platzVerkaufsWerkzeug
+		        .registriereBeobachter(new SubwerkzeugObserver()
+		        {
+		            @Override
+		            public void reagiereAufAenderung()
+		            {
+		                _barzahlungsWerkzeug.init(vorstellung, plaetze, preisProPlatz);
+		            }
+		        });
     }
 
     /**

@@ -2,12 +2,14 @@ package de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Platz;
 
 /**
  * Die UI des {@link PlatzVerkaufsWerkzeug}.
@@ -62,6 +64,22 @@ class PlatzVerkaufsWerkzeugUI
         panel.add(southPanel, BorderLayout.SOUTH);
         
         return panel;
+    }
+    
+    /**
+     * 
+     */
+    public int getAnzahlSelectedPlaetze()
+    {
+    	return _platzplan.getAusgewaehltePlaetze().size();
+    }
+    
+    /**
+     * 
+     */
+    public Set<Platz> getSelectedPlaetze()
+    {
+    	return _platzplan.getAusgewaehltePlaetze();
     }
     
     /**
