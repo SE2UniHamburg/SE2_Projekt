@@ -47,9 +47,15 @@ public class BarzahlungsWerkzeug
      * 
      * @ensure result != null
      */
-    public JFrame getUframe()
+    public JFrame getUIframe()
     {
         return _barui.getUIframe();
+    }
+    
+    
+    public void getUIPanel()
+    {
+    	_barui.zeigeFenster();
     }
 
     
