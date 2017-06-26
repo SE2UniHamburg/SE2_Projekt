@@ -62,7 +62,6 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //fuehreBarzahlungDurch();
             	reagiereAufVerkaufenButton();
             }
         });
@@ -89,19 +88,20 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
     }
 
     /**
-     * Startet die Barzahlung.
-     
-    private void fuehreBarzahlungDurch()
-    {
-        verkaufePlaetze(_vorstellung);
-    }
-    **/
-
+     * Informiert das Kassenwerkzeug, wenn auf Verkaufen geklickt wurde.
+     */
     private void reagiereAufVerkaufenButton()
     {
     	informiereUeberAenderung();
     }
-    
+
+    /**
+     * Startet die Barzahlung.
+     */
+    public void fuehreBarzahlungDurch()
+    {
+        verkaufePlaetze(_vorstellung);
+    }
     
     /**
      * Reagiert darauf, dass sich die Menge der ausgewählten Plätze geändert
@@ -218,14 +218,20 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 
     /**
      * Verkauft die ausgewählten Plaetze.
-     
+     */
     private void verkaufePlaetze(Vorstellung vorstellung)
     {
         Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
         vorstellung.verkaufePlaetze(plaetze);
-        //fuehreBarzahlungDurch();
         aktualisierePlatzplan();
     }
+
+    public int getVerkaufsPlaetze()
+    {
+    	Set<Platz> plaetze =_ui.getPlatzplan().getAusgewaehltePlaetze();
+    	return plaetze.size();
+    }
+    
 
     /**
      * Storniert die ausgewählten Plaetze.
