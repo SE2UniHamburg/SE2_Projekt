@@ -138,4 +138,9 @@ class KassenWerkzeugUI
     {
         return _beendenButton;
     }
+    
+    public JFrame getFrame()
+    {
+    	return _frame;
+    }
 }

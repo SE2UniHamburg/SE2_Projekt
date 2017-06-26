@@ -9,7 +9,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.materialien.Tagesplan;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeug;
-import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeugUI;
+//import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeugUI;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.datumsauswaehler.DatumAuswaehlWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.vorstellungsauswaehler.VorstellungsAuswaehlWerkzeug;
@@ -29,13 +29,12 @@ public class KassenWerkzeug
 
     // UI dieses Werkzeugs
     private KassenWerkzeugUI _ui;
-    //private BarzahlungsWerkzeugUI _barui;
 
     // Die Subwerkzeuge
     private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
     private DatumAuswaehlWerkzeug _datumAuswaehlWerkzeug;
     private VorstellungsAuswaehlWerkzeug _vorstellungAuswaehlWerkzeug;
-    //private BarzahlungsWerkzeug _barzahlungsWerkzeug;
+    private BarzahlungsWerkzeug _barzahlungsWerkzeug;
 
     /**
      * Initialisiert das Kassenwerkzeug.
@@ -54,15 +53,15 @@ public class KassenWerkzeug
         _platzVerkaufsWerkzeug = new PlatzVerkaufsWerkzeug();
         _datumAuswaehlWerkzeug = new DatumAuswaehlWerkzeug();
         _vorstellungAuswaehlWerkzeug = new VorstellungsAuswaehlWerkzeug();
-       
+        _barzahlungsWerkzeug = new BarzahlungsWerkzeug();
+
         erzeugeListenerFuerSubwerkzeuge();
 
         // UI erstellen (mit eingebetteten UIs der direkten Subwerkzeuge)
         _ui = new KassenWerkzeugUI(_platzVerkaufsWerkzeug.getUIPanel(),
                 _datumAuswaehlWerkzeug.getUIPanel(),
                 _vorstellungAuswaehlWerkzeug.getUIPanel());
-       
-
+        
         registriereUIAktionen();
         setzeTagesplanFuerAusgewaehltesDatum();
         setzeAusgewaehlteVorstellung();
@@ -76,23 +75,40 @@ public class KassenWerkzeug
     private void erzeugeListenerFuerSubwerkzeuge()
     {
         _datumAuswaehlWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
-        {
-            @Override
-            public void reagiereAufAenderung()
-            {
-                setzeTagesplanFuerAusgewaehltesDatum();
-            }
-        });
+		        {
+		            @Override
+		            public void reagiereAufAenderung()
+		            {
+		                setzeTagesplanFuerAusgewaehltesDatum();
+		            }
+		        });
 
-        _vorstellungAuswaehlWerkzeug
-                .registriereBeobachter(new SubwerkzeugObserver()
+        _vorstellungAuswaehlWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+	        	{
+	        		@Override
+	        		public void reagiereAufAenderung()
+	        		{
+	        			setzeAusgewaehlteVorstellung();
+	        		}
+	        	});
+        _platzVerkaufsWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+        		{
+        			@Override
+        			public void reagiereAufAenderung()
+        			{
+        				oeffneBarzahlungsFenster();
+        			}
+        		});
+        _barzahlungsWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+            {
+                @Override
+                public void reagiereAufAenderung()
                 {
-                    @Override
-                    public void reagiereAufAenderung()
-                    {
-                        setzeAusgewaehlteVorstellung();
-                    }
-                });
+                    verkaufeKarten();
+                    //_ui.getFrame().setEnabled(true);
+                    
+                }
+            });
     }
 
     /**
@@ -106,6 +122,7 @@ public class KassenWerkzeug
             public void actionPerformed(ActionEvent e)
             {
                 reagiereAufBeendenButton();
+                
             }
         });
     }
@@ -128,6 +145,27 @@ public class KassenWerkzeug
     {
         _platzVerkaufsWerkzeug.setVorstellung(getAusgewaehlteVorstellung());
     }
+    
+    /**
+     * Öffnet das Barzahlungsfenster, wenn Verkaufen gewählt wurde.
+     */
+    private void oeffneBarzahlungsFenster()
+    {
+        Vorstellung vorstellung = getAusgewaehlteVorstellung();       
+        int anzahlSitzplaetze = _platzVerkaufsWerkzeug.getVerkaufsPlaetze(); 
+        int preisProSitzplatz =  vorstellung.getPreis();  
+        _barzahlungsWerkzeug.zeigeFenster(vorstellung, anzahlSitzplaetze, preisProSitzplatz);
+       // _ui.getFrame().setEnabled(false);
+    }
+    
+    /**
+     * Verkauft die ausgewählten Kinokarten.
+     */
+    private void verkaufeKarten()
+    {
+        _platzVerkaufsWerkzeug.fuehreBarzahlungDurch();
+        
+    }
 
     /**
      * Beendet die Anwendung.
@@ -137,7 +175,6 @@ public class KassenWerkzeug
         _ui.schliesseFenster();
     }
     
-   
     /**
      * Gibt das derzeit gewählte Datum zurück.
      */
