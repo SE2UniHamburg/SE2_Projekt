@@ -15,6 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
+import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
+
 /**
  * Die UI des {@link Barzahlung}.
  * 
@@ -207,12 +209,16 @@ public class BarzahlungsWerkzeugUI
     /**
      * Zeigt das Fenster an.
      */
-    public void zeigeFenster()
+    public void zeigeFenster(Vorstellung vorstellung, int anzahlPlaetze, int preisProPlatz)
     {
         _frame.setSize(500, 500);
         _frame.setVisible(true);
     }
 
+    public void schliesseFenster()
+    {
+    	_frame.setVisible(false);
+    }
 
 //TODO getter von restlichen Labels
     
@@ -224,6 +230,11 @@ public class BarzahlungsWerkzeugUI
         return _barLabel;
     }
     
+    public void zeigeRueckgeldAn(String rueckgeld)
+    {
+    	 _infoRueckgeldLabel.setText(rueckgeld);
+        
+    }
     /**
      * Gibt den ok-Button zurück.
      */
@@ -246,6 +257,11 @@ public class BarzahlungsWerkzeugUI
     public JFrame getUIframe()
     {
         return _frame;
+    }
+    
+    public JTextField getTextField()
+    {
+    	return _eintragBarField;
     }
 
 
