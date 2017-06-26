@@ -29,7 +29,7 @@ public class BarzahlungsWerkzeug
     
     private BarzahlungsWerkzeugUI _barui;
 
-
+    //TODO Hauptfenster schließt nicht nach SChließen des Verkaufsfensters
     /**
      * Initialisiert das PlatzVerkaufsWerkzeug.
      */
@@ -37,25 +37,18 @@ public class BarzahlungsWerkzeug
     {
         _barui = new BarzahlungsWerkzeugUI();
         //registriereUIAktionen();
-        // Am Anfang wird keine Vorstellung angezeigt:
-        //setVorstellung(null);
+        
     }
 
     /**
-     * Gibt das Panel dieses Subwerkzeugs zurück. Das Panel sollte von einem
+     * Gibt die UI dieses Subwerkzeugs zurück. Das Panel sollte von einem
      * Kontextwerkzeug eingebettet werden.
      * 
      * @ensure result != null
      */
-    public JFrame getUIframe()
+    public JFrame getUframe()
     {
         return _barui.getUIframe();
-    }
-    
-    
-    public void getUIPanel()
-    {
-    	_barui.zeigeFenster();
     }
 
     

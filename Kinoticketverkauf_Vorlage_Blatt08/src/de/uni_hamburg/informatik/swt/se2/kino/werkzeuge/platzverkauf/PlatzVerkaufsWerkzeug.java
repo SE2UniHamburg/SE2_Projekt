@@ -10,7 +10,8 @@ import javax.swing.JPanel;
 import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Platz;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
-import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.ObservableSubwerkzeug;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeug;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeugUI;
 
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
@@ -22,20 +23,25 @@ import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.ObservableSubwerkzeug;
  * @author SE2-Team
  * @version SoSe 2017
  */
-public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
+public class PlatzVerkaufsWerkzeug
 {
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
 
     private PlatzVerkaufsWerkzeugUI _ui;
     
-    
+    private BarzahlungsWerkzeugUI _barui;
+
+    private BarzahlungsWerkzeug _barzahlungsWerkzeug;
+
     /**
      * Initialisiert das PlatzVerkaufsWerkzeug.
      */
     public PlatzVerkaufsWerkzeug()
     {
         _ui = new PlatzVerkaufsWerkzeugUI();
+        _barzahlungsWerkzeug = new BarzahlungsWerkzeug();
+        _barui = new BarzahlungsWerkzeugUI();
         registriereUIAktionen();
         // Am Anfang wird keine Vorstellung angezeigt:
         setVorstellung(null);
@@ -99,10 +105,8 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 
     private void reagiereAufVerkaufenButton()
     {
-    	informiereUeberAenderung();
+    	_barui.zeigeFenster();
     }
-    
-    
     /**
      * Reagiert darauf, dass sich die Menge der ausgewählten Plätze geändert
      * hat.
