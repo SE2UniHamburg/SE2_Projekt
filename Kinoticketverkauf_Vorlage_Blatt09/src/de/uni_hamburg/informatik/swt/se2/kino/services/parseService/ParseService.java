@@ -45,7 +45,7 @@ public class ParseService
                 fac *= 10;
             }
             fac = 1.0/10.0;
-            for(int i = postArray.length-1; i >= 0; i--){
+            for(int i = 0; i <= postArray.length-1; i++){
                 res += parseDigitToDouble(postArray[i], fac);
                 fac /= 10;
             }
@@ -54,6 +54,7 @@ public class ParseService
         else
             return Double.MIN_VALUE;
     }
+    
             private static double parseDigitToDouble(char c,double fac)
             {
             double d;

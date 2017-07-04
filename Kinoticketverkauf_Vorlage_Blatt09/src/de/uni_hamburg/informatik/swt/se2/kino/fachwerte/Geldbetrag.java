@@ -40,7 +40,7 @@ public final class Geldbetrag
     
     public static Geldbetrag get(double euro)
     {
-        int eurocent = (int)euro*100;
+        int eurocent = (int)(euro*100);
         return new Geldbetrag(eurocent);
     }
     
@@ -49,7 +49,7 @@ public final class Geldbetrag
         double euro = ParseService.parseToDouble(euroString);
         if(euro != Double.MIN_VALUE)
         {
-            int eurocent = (int)euro*100;
+            int eurocent = (int)(euro*100);
             return new Geldbetrag(eurocent);
         }
         else
@@ -79,7 +79,7 @@ public final class Geldbetrag
     @Override
     public String toString()
     {
-        return ""+_euro+","+formatCent(_cent);
+        return ""+formatTwoDigit(_euro)+","+formatTwoDigit(_cent);
     }
     
     @Override
@@ -128,11 +128,11 @@ public final class Geldbetrag
     
     private int convertToEurocent()
     {
-        return ((_schulden)?-1:1)*(_euro*100)+_cent;
+        return ((_schulden)?-1:1)*((_euro*100)+_cent);
     }
     
-    private String formatCent(int cent)
+    private String formatTwoDigit(int val)
     {
-        return ((cent < 10)?"0":"")+cent;
+        return ((val < 10 && val > -10)?"0":"")+val;
     }
 }

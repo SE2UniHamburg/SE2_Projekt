@@ -27,8 +27,7 @@ public class parseServiceTest
        assertTrue(ParseService.parseToDouble("1")==1.0);
        assertTrue(ParseService.parseToDouble("12.121,3")==12121.3);
        assertTrue(ParseService.parseToDouble("-1,3")==-1.3);
-       assertTrue(ParseService.parseToDouble("a1,3")==Double.MIN_VALUE);
-       
+       assertTrue(ParseService.parseToDouble("a1,3")==Double.MIN_VALUE);       
    }
 
 }

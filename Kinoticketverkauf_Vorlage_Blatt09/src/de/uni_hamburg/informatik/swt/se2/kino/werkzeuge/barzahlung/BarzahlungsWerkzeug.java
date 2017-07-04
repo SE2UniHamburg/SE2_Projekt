@@ -35,6 +35,7 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
 
     private BarzahlungsWerkzeugUI _ui;
     private int _preis;
+    //TODO Geldbetrag benutzen
     private boolean _barzahlungErfolgreich;
     private boolean _ausreichenderGeldbetrag;
 
