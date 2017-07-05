@@ -164,7 +164,7 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      */
     private void reagiereAufEingabeText(String eingabePreis)
     {
-        if(eingabePreis.matches("^\\d+,\\d{1,2}$"))
+        if(eingabePreis.matches("^((\\d{1,3}(\\.\\d\\d\\d)*)|\\d+)(,\\d{1,2})?$"))
         {
         	Geldbetrag eingabeBetrag = Geldbetrag.get(0);
             if (eingabePreis != null)
@@ -187,7 +187,7 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
         }
         else
         {
-            if(!eingabePreis.matches("^\\d*(,\\d{0,2})?$"))
+            if(!eingabePreis.matches("^((\\d{1,3}((\\.\\d\\d\\d)*\\.\\d{0,3})?)|\\d*)(,\\d{0,2})?$"))
                     loescheGezahltenBetrag();
             _ausreichenderGeldbetrag = false;
             zeigeRestbetrag(_preis);
