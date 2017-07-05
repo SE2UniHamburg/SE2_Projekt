@@ -126,20 +126,6 @@ public final class Geldbetrag
         return new Geldbetrag(eurocent*faktor);
     }
     
-    public static boolean vergleiche(Geldbetrag betrag1, Geldbetrag betrag2)
-    {
-    	int eurocent1 = betrag1.convertToEurocent();
-        int eurocent2 = betrag2.convertToEurocent();
-        if (eurocent1 >= eurocent2)
-        {
-        	return true;
-        }
-        else
-        {
-        	return false;
-        }
-    }
-    
     private int convertToEurocent()
     {
         return ((_schulden)?-1:1)*((_euro*100)+_cent);
