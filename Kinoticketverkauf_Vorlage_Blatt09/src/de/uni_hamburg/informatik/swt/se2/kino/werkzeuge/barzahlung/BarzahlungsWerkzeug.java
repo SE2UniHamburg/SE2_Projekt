@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Geldbetrag;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.ObservableSubwerkzeug;
 
 /**
@@ -34,7 +35,7 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
 {
 
     private BarzahlungsWerkzeugUI _ui;
-    private int _preis;
+    private Geldbetrag _preis;
     //TODO Geldbetrag benutzen
     private boolean _barzahlungErfolgreich;
     private boolean _ausreichenderGeldbetrag;
@@ -54,11 +55,11 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      * Startet den Barzahlungsvorgang. Die UI wird angezeigt. Der Programmfluss
      * kehrt erst nach dem Beenden des Bezahlvorgangs an den Aufrufer zurück.
      * 
-     * @param preis der einzunehmende Gelbetrag
+     * @param _ausgewaehlterGesamtbetrag der einzunehmende Gelbetrag
      */
-    public void fuehreBarzahlungDurch(int preis)
+    public void fuehreBarzahlungDurch(Geldbetrag _ausgewaehlterGesamtbetrag)
     {
-        _preis = preis;
+        _preis = _ausgewaehlterGesamtbetrag;
         _ausreichenderGeldbetrag = false;
         _barzahlungErfolgreich = false;
         setzeUIAnfangsstatus();
@@ -163,23 +164,35 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      */
     private void reagiereAufEingabeText(String eingabePreis)
     {
-        if (eingabePreis.isEmpty())
+        if(eingabePreis.matches("^\\d+,\\d{1,2}$"))
         {
-            eingabePreis = "0";
+        	Geldbetrag eingabeBetrag = Geldbetrag.get(0);
+            if (eingabePreis != null)
+            {
+                eingabeBetrag = Geldbetrag.get(eingabePreis);
+            }
+            try
+            {
+                //Geldbetrag eingabeBetrag = Integer.parseInt(eingabePreis);
+                Geldbetrag differenz = Geldbetrag.subtrahieren(eingabeBetrag, _preis);
+                _ausreichenderGeldbetrag = !differenz.getSchulden();
+                zeigeRestbetrag(differenz);
+            }
+            catch (NumberFormatException ignore)
+            {
+                _ausreichenderGeldbetrag = false;
+                zeigeFehlertext();
+            }
+            zeigeAusreichenderGeldbetragStatus();
         }
-        try
+        else
         {
-            int eingabeBetrag = Integer.parseInt(eingabePreis);
-            _ausreichenderGeldbetrag = (eingabeBetrag >= _preis);
-            int differenz = Math.abs(eingabeBetrag - _preis);
-            zeigeRestbetrag(differenz);
-        }
-        catch (NumberFormatException ignore)
-        {
+            if(!eingabePreis.matches("^\\d*(,\\d{0,2})?$"))
+                    loescheGezahltenBetrag();
             _ausreichenderGeldbetrag = false;
-            zeigeFehlertext();
+            zeigeRestbetrag(_preis);
+            zeigeAusreichenderGeldbetragStatus();
         }
-        zeigeAusreichenderGeldbetragStatus();
     }
 
     /**
@@ -247,9 +260,9 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      * 
      * @param differenz ein eingegebener Betrag
      */
-    private void zeigeRestbetrag(int differenz)
+    private void zeigeRestbetrag(Geldbetrag differenz)
     {
-        _ui.getRestbetragTextfield().setText(differenz + " Eurocent");
+        _ui.getRestbetragTextfield().setText(differenz + " Euro");
     }
 
     /**
@@ -257,6 +270,6 @@ public class BarzahlungsWerkzeug extends ObservableSubwerkzeug
      */
     private void zeigePreis()
     {
-        _ui.getPreisTextfield().setText(_preis + " Eurocent");
+        _ui.getPreisTextfield().setText(_preis + " Euro");
     }
 }
