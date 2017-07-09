@@ -40,7 +40,7 @@ public final class Geldbetrag
     
     public static Geldbetrag get(double euro)
     {
-        int eurocent = (int)(euro*100);
+        int eurocent = (int)Math.round(euro*100.0);
         return new Geldbetrag(eurocent);
     }
     
@@ -49,8 +49,7 @@ public final class Geldbetrag
         double euro = ParseService.parseToDouble(euroString);
         if(euro != Double.MIN_VALUE)
         {
-            int eurocent = (int)(euro*100);
-            return new Geldbetrag(eurocent);
+            return get(euro);
         }
         else
             return null;
